@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+	<h2>JSON</h2>
+	<p id="JSON"></p>
+
+	<script>
+	var vendors = [ 
+	{"companyName":"Company A"},
+	{"companyName":"Company B"},
+	{"companyName":"Company C"}
+	];
+
+	var obj = JSON.parse(text);
+
+	document.getElementById("JSON").innerHTML =
+	obj.name + "<br>" +
+	obj.street + "<br>" +
+	obj.phone;
+	</script>
+
+</body>
+</html>

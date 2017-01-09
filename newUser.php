@@ -33,50 +33,43 @@
 
 	<nav class="navbar navbar-static-top c-header-bar">
 		<div class="c-header-text-container">
-			<h1 class="display-1"> FANNIE MAE HOUSE MAINTENANCE</h1>
-
+			<img alt="[Fannie Mae logo]" src="http://www.fanniemae.com/resources/img/fannie_mae_logo.gif" class="left">
 			<ul class="nav nav-pills">
-				<li> <a href=""> HOME </a></li>
-				<li> <a href="schedule.html"> Schedule </a></li>
-				<li> <a href=""> Add Maintenance </a></li>
-				<li> <a href="vendors.html"> Vendors </a></li>
-				<li> <a href=""> Contact Us </a></li>
-				<li> <a href=""> About Us </a></li>
+				<li> <a href="home.php"> HOME </a></li>
 			</ul>
 		</div>
 	</nav>
 
 	<div class="login-page">
-
 		<div class="form">
-			<form class="login-form">
-				<input type="text" placeholder="Username"/>
-				<input type="password" placeholder="Password"/>
-				<input type="password" placeholder="Retype password" />
-				<button onclick="">CREATE USER</button>
-
-				<!--<?php
-					$myfile = fopen("Users.txt","w") or die("Unable to create users!");
-					$txt = "Company A\n";
-					fwrite($myfile, $txt);
-					$txt = "Company B\n";
-					fwrite($myfile, $txt);
-					fclose($myfile)
-				?>-->
-				<p class="message"> Not Registered? <a href="newUser.html"> </a> </p>
+			<form class="login-form" method="post" >
+				<input tpye="text" name="vendor" placeholder="Vendor Name" />
+				<input type="text" name="name" placeholder="Username"/>
+				<input type="password" name="password" placeholder="Password"/>
+				<input type="password" name="repwd" placeholder="Retype password" />
+				<input type="submit" name="submit"  class="loginBUTT" value="CREATE USER" />
 			</form>
-
 		</div>
-		<?php
-		$pdo = new PDO('mysql:host=localhost;dbname=users','FMAdmin','pwd123');
-		$result = $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		try {
-			$result = $pdo->query('SELECT * FROM `userinfo` WHERE `vendor` = "Company A"');
-		} catch (PDOException $e) {
-			echo $e->getMessage();
-		}
-		?>
 	</div>
+	<?php
+	if(isset($_POST["submit"])) {
+		try {
+			$conn = new PDO('mysql:host=localhost;dbname=appointment','FMAdmin','pwd123');
+			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$sql = "INSERT INTO userinfo (username, password, vendor) VALUES ('".$_POST[name]."','".$_POST[password]."','".$_POST[vendor]."')";
+			if($conn->query($sql)){
+				echo "<script type='text/javascript'> alert('New Record Inserted Successfully');</script>";
+				echo "Connected Successfully. Account created";
+			} else {
+				echo "<script type='text/javascript'> alert('Data not successfully Inserted');</script>";
+			}
+			$conn = null;
+		} catch(PDOException $e) {
+			echo "User not created. Error: " .$e->getMessage();
+		}
+		header('Location: home.php');
+	}
+	?>
 
 </body>
 </html>
